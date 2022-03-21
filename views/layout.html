@@ -15,8 +15,16 @@
                 <div>로그인 성공! from layout.html</div>
                 
                 {% else %}
+                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111466.png" alt="" width="40%">
                 <form id="login-form" action="/auth/login" method="post">
-                    <div>로그인해라 from layout.html</div>
+                    <div class="input-group">
+                        <input id="uid" type="uid" name="uid" placeholder="아이디" required autofocus>
+                    </div>
+                    <div class="input-group">
+                        <input id="password" type="password" name="password" placeholder="비밀번호" required>
+                    </div>
+                    <button id="login" type="submit" class="btn">로그인</button>
+                    <a id="join" href="/join" class="btn">회원가입</a>
                 </form>
                 {% endif %}
             </div>
