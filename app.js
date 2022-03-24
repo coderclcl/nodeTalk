@@ -10,6 +10,8 @@ const passport = require('passport');
 
 dotenv.config();
 const pageRouter = require('./routes/page');
+const authRouter = require('./routes/auth');
+
 const { sequelize } = require('./models');
 const passportConfig = require('./passport');
 
@@ -30,6 +32,9 @@ sequelize.sync({ force: false })
     });
 
 app.use(morgan('dev'));
+
+// static은 정적 파일 제공 역할.
+// 사용자가 127.0.0.1:3000/images/cat.jpg 로 접근한다면, 해당 파일을 public/images/cat.jpg에 존재하는지 검색하게 됨
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -47,6 +52,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', pageRouter);
+app.use('/auth', authRouter);
 
 app.use((req, res, next) => {
     const error = new Error(`${req,method} ${req.url} 라우터가 없습니다.`);

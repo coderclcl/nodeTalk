@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="css/styles.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Join - NodeTalk</title>
+    <title>Welcome to NodeTalk</title>
   </head>
   <body>
     <div class="status-bar">
@@ -23,23 +23,18 @@
     </div>
 
     <header class="welcome-header">
-      <h1 class="welcome-header__title">Create Account</h1>
+      <h1 class="welcome-header__title">Welcome to NodeTalk</h1>
       <p class="welcome-header__text">
-        <!-- By creating an account, you agree to NodeTalk's Privacy Notice. -->
-        Welcome to NodeTalk.
+        If you have a NodeTalk Account, log in with your ID.
       </p>
     </header>
 
-    <form action="/auth/join" method="POST" id="login-form">
+    <form action="/auth/login" method="POST" id="login-form">
       <input name="uid" type="text" placeholder="ID" />
       <input name="password" type="password" placeholder="Password" />
-      <input name="name" type="text" placeholder="Name" />
-      <input name="phone" type="text" placeholder="Phone Number" />
-      <input name="email" type="text" placeholder="Email Account" />
-      <input name="birth" type="text" placeholder="Birth (YYYY.MM.DD)" />
-      <input type="submit" value="Create Account" />
+      <input type="submit" value="Log In" />
       <!-- <a href="#">Find NodeTalk Account or Password</a> -->
-      <a href="/">Already have an account? Log In > </a>
+      <a href="/join">Create NodeTalk Account > </a>
     </form>
 
     <script

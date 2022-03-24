@@ -10,12 +10,14 @@ module.exports = () => {
         passwordField: 'password',
     }, async (uid, password, done) => {
         try {
-            const exUser = await User.findOne({ where: { email } });
+            const exUser = await User.findOne({ where: { uid } });
             if (exUser) {
-                const result = await bcrypt.compare(password, exUser.password);
+                const result = password == exUser.password; 
                 if (result) {
                     done(null, exUser);
                 } else {
+                    console.log(exUser.password);
+                    console.log(password);
                     done(null, false, { message: '비밀번호가 일치하지 않습니다.' });
                 }
             } else {

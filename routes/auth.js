@@ -10,7 +10,7 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
     const { uid, password, name, phone, mail, birth } = req.body;
 
     try {
-        const exUser = await User.findOne({ where: { email } });
+        const exUser = await User.findOne({ where: { uid } });
         if (exUser) {
             return res.redirect('/join?error=exist');
         }
@@ -34,6 +34,9 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
 });
 
 router.post('/login', isNotLoggedIn, (req, res, next) => {
+
+    console.log("routes/auth.js 의 router.post('/login')로 왔어");
+
     passport.authenticate('local', (authError, user, info) => {
         if (authError) {
             console.error(authError);
@@ -47,7 +50,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                 console.error(loginError);
                 return next(loginError);
             }
-            return res.redirect('/');
+            return res.redirect('/friends');
         });
     })(req, res, next);
 });
