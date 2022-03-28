@@ -1,7 +1,50 @@
-{% extends 'layout.html' %}
-
-{% block content %}
-    <div>
-        로그인 폼
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="css/styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join - NodeTalk</title>
+  </head>
+  <body>
+    <div class="status-bar">
+      <div class="status-bar__column">
+        <span>No Service</span>
+        <i class="fas fa-wifi"></i>
+      </div>
+      <div class="status-bar__column">
+        <span>21:43</span>
+      </div>
+      <div class="status-bar__column">
+        <span>100%</span>
+        <i class="fas fa-battery-full fa-lg"></i>
+        <i class="fas fa-bolt"></i>
+      </div>
     </div>
-{% endblock %}
+
+    <header class="welcome-header">
+      <h1 class="welcome-header__title">Create Account</h1>
+      <p class="welcome-header__text">
+        <!-- By creating an account, you agree to NodeTalk's Privacy Notice. -->
+        Welcome to NodeTalk.
+      </p>
+    </header>
+
+    <form action="/auth/join" method="POST" id="login-form">
+      <input name="uid" type="text" placeholder="ID" />
+      <input name="password" type="password" placeholder="Password" />
+      <input name="name" type="text" placeholder="Name" />
+      <input name="phone" type="text" placeholder="Phone Number" />
+      <input name="mail" type="text" placeholder="Email Account" />
+      <input name="birth" type="text" placeholder="Birth (YYYY.MM.DD)" />
+      <input type="submit" value="Create Account" />
+      <!-- <a href="#">Find NodeTalk Account or Password</a> -->
+      <a href="/">Already have an account? Log In > </a>
+    </form>
+
+    <script
+      src="https://kit.fontawesome.com/b0a0fa560b.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<!-- 구버전 -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{{title}}</title>
+        <meta name="viewport" content="width=device-width, user-scalable=no">
+        <meta http-equiv="X-UA-Compatible" content="IE-edge">
+        <link rel="stylesheet" href="/main.css">
+    </head>
+    <body>
+        <div class="container">
+
+            <div>
+                {% if user and user.id %}
+                <div>로그인 성공! from layout.html</div>
+                
+                {% else %}
+                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111466.png" alt="" width="40%">
+                <form id="login-form" action="/auth/login" method="post">
+                    <div class="input-group">
+                        <input id="uid" type="uid" name="uid" placeholder="아이디" required autofocus>
+                    </div>
+                    <div class="input-group">
+                        <input id="password" type="password" name="password" placeholder="비밀번호" required>
+                    </div>
+                    <button id="login" type="submit" class="btn">로그인</button>
+                    <a id="join" href="/join" class="btn">회원가입</a>
+                </form>
+                {% endif %}
+            </div>
+            {% block content %}
+            {% endblock %}
+        </div>
+        <script>
+            window.onload = () => {
+                if (new URL(location.href).searchParams.get('loginError')) {
+                    alert(new URL(location.href).searchParams.get('loginError'));
+                }
+            };
+        </script>
+        {% block script %}
+        {% endblock %}
+    </body>
+</html>

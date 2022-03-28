@@ -1,37 +1,35 @@
-'use strict';
-
-const fs = require('fs');
-const path = require('path');
 const Sequelize = require('sequelize');
-const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+const config = require('../config/config')[env];
+const User = require('./user');
+const UserInfo = require('./userInfo');
+const Room = require('./room');
+const Chat = require('./chat');
+
 const db = {};
 
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
-
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
-  })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
-  });
-
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+// config.json 파일과 연결된 부분 
+// Sequelize는 시퀄라이즈 패키지이자 생성자. 
+// config/config.json에서 데이터베이스 설정을 불러온 후 new Sequelize를 통해 MySQL 연결 객체를 생성함. 
+// 연결 객체를 나중에 재사용하기 위해 db.sequelize에 넣어둠. 
+const sequelize = new Sequelize(
+  config.database, config.username, config.password, config,
+);
 
 db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+db.User = User;
+db.UserInfo = UserInfo;
+db.Room = Room;
+db.Chat = Chat;
+
+User.init(sequelize);
+UserInfo.init(sequelize);
+Room.init(sequelize);
+Chat.init(sequelize);
+
+User.associate(db);
+UserInfo.associate(db);
+Room.associate(db);
+Chat.associate(db);
 
 module.exports = db;
