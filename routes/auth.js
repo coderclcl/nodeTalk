@@ -3,6 +3,7 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const User = require('../models/user');
+const UserInfo = require('../models/userInfo');
 
 const  router = express.Router();
 
@@ -14,17 +15,17 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
         if (exUser) {
             return res.redirect('/join?error=exist');
         }
-        const hash = await bcrypt.hash(password, 12);
+        // transaction 하는 방법은? 
         await User.create({
             uid,
-            password: hash,
-            name,
+            password,
         });
         await UserInfo.create({
             uid,
             phone, 
             mail,
-            birth
+            birth,
+            name,
         });
         return res.redirect('/');
     } catch (error) {
