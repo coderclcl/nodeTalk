@@ -4,29 +4,36 @@ const bcrypt = require('bcrypt');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const User = require('../models/user');
 const UserInfo = require('../models/userInfo');
+const { sequelize } = require('../models');
 
 const  router = express.Router();
 
 router.post('/join', isNotLoggedIn, async (req, res, next) => {
     const { uid, password, name, phone, mail, birth } = req.body;
 
+    const t = await sequelize.transaction();
+
     try {
         const exUser = await User.findOne({ where: { uid } });
         if (exUser) {
             return res.redirect('/join?error=exist');
         }
-        // transaction 하는 방법은? 
+        // transaction을 sequelize 기능으로 구현 
         await User.create({
             uid,
             password,
-        });
+        }, {transaction: t});
         await UserInfo.create({
             uid,
             phone, 
             mail,
             birth,
             name,
-        });
+        }, {transaction: t});
+
+        // 문제 없으면 이 줄에 도달해서 트랜잭션을 커밋 
+        await t.commit();
+
         return res.redirect('/');
     } catch (error) {
         console.error(error);

@@ -4,6 +4,7 @@ module.exports = class User extends Sequelize.Model {
     static init(sequelize) {
         return super.init({
             uid: {
+                primaryKey: true, // id 컬럼 자동생성 방지 
                 type: Sequelize.STRING(10),
                 allowNull: false,
                 unique:true,
@@ -28,26 +29,34 @@ module.exports = class User extends Sequelize.Model {
 
         // User 테이블과 UserInfo 테이블의 관계 
         db.User.hasOne(db.UserInfo, {
+            foreignKey: 'uid',
+            sourceKey: 'uid',
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE'
+        });
+        
+        // User 테이블과 Chat 테이블의 관계 
+        db.User.hasMany(db.Chat, {
+            foreignKey: 'uid',
+            sourceKey: 'uid',
         });
         
         // User 테이블과 User 테이블의 관계 (Friend 중간 테이블 만들기)
         db.User.belongsToMany(db.User, {
             foreignKey: 'followingId',
             as: 'Followers',
-            through: 'Friend' // 중간 테이블 이름 
+            through: 'Friends' // 중간 테이블 이름 
         });
 
         db.User.belongsToMany(db.User, {
             foreignKey: 'followerId',
             as: 'Followings',
-            through: 'Friend' // 중간 테이블 이름 
+            through: 'Friends' // 중간 테이블 이름 
         });
 
         // User 테이블과 Room 테이블의 관계 (Member 중간 테이블 만들기)
         db.User.belongsToMany(db.Room, {
-            through: 'Member',
+            through: 'Members',
             foreignKey: 'uid',
         });
 
