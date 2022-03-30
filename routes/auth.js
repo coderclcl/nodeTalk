@@ -34,7 +34,7 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
         // 문제 없으면 이 줄에 도달해서 트랜잭션을 커밋 
         await t.commit();
 
-        return res.redirect('/');
+        return res.redirect('/joinComplete');
     } catch (error) {
         console.error(error);
         return next(error);
@@ -43,7 +43,7 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
 
 router.post('/login', isNotLoggedIn, (req, res, next) => {
 
-    console.log("routes/auth.js 의 router.post('/login')로 왔어");
+    // console.log("routes/auth.js 의 router.post('/login')로 왔어");
 
     passport.authenticate('local', (authError, user, info) => {
         if (authError) {

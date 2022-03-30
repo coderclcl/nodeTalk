@@ -26,6 +26,10 @@ router.get('/join', (req, res, next) => {
     res.render('join');
 });
 
+router.get('/joinComplete', (req, res, next) => {
+    res.render('joinComplete');
+});
+
 router.get('/friends', (req, res, next) => {
     res.render('friends');
 });
