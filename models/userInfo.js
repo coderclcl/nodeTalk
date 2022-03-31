@@ -22,10 +22,6 @@ module.exports = class UserInfo extends Sequelize.Model {
                 type: Sequelize.DATE,
                 allowNull: true,
             },
-            name: {
-                type: Sequelize.STRING(10),
-                allowNull:false,
-            },
         }, {
             sequelize,
             timestamps: true,

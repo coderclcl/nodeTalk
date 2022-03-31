@@ -22,13 +22,13 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
         await User.create({
             uid,
             password,
+            name,
         }, {transaction: t});
         await UserInfo.create({
             uid,
             phone, 
             mail,
             birth,
-            name,
         }, {transaction: t});
 
         // 문제 없으면 이 줄에 도달해서 트랜잭션을 커밋 
@@ -42,8 +42,6 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
 });
 
 router.post('/login', isNotLoggedIn, (req, res, next) => {
-
-    // console.log("routes/auth.js 의 router.post('/login')로 왔어");
 
     passport.authenticate('local', (authError, user, info) => {
         if (authError) {

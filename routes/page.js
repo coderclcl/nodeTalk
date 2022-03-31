@@ -4,53 +4,53 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const router = express.Router();
 
 router.use((req, res, next) => {
-    res.locals.user = null;
+    res.locals.user = req.user;
     next();
 });
 
-// router.get('/join', isNotLoggedIn, (req, res) => {
-//     res.render('index', { title: '회원가입' });
-// });
-
-
-
-router.get('/', (req, res, next) => {
-    const friends = [];
-    res.render('index', {
-        title: 'NodeTalk',
-        friends,
-    });
+// 로그인되지 않은 사람만 로그인 페이지에 접근 가능하고, 만약 로그인되어 있다면 middleware.js에서 /friends 로 리다이렉트 
+router.get('/', isNotLoggedIn, (req, res, next) => {
+    try {
+        res.render('login', {
+            title: 'NodeTalk',
+        });
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
 });
 
-router.get('/join', (req, res, next) => {
+// 회원가입, 회원가입 완료 페이지는 로그인되지 않은 사람만 볼 수 있게 함 
+router.get('/join', isNotLoggedIn, (req, res, next) => {
     res.render('join');
 });
 
-router.get('/joinComplete', (req, res, next) => {
+router.get('/joinComplete', isNotLoggedIn, (req, res, next) => {
     res.render('joinComplete');
 });
 
-router.get('/friends', (req, res, next) => {
+// 친구 목록은 로그인된 사람만 볼 수 있게 함 
+router.get('/friends', isLoggedIn, (req, res, next) => {
     res.render('friends');
 });
 
-router.get('/chat', (req, res, next) => {
+router.get('/chat', isLoggedIn, (req, res, next) => {
     res.render('chat');
 });
 
-router.get('/chats', (req, res, next) => {
+router.get('/chats', isLoggedIn, (req, res, next) => {
     res.render('chats');
 });
 
-router.get('/find', (req, res, next) => {
+router.get('/find', isLoggedIn, (req, res, next) => {
     res.render('find');
 });
 
-router.get('/more', (req, res, next) => {
+router.get('/more', isLoggedIn, (req, res, next) => {
     res.render('more');
 });
 
-router.get('/settings', (req, res, next) => {
+router.get('/settings', isLoggedIn, (req, res, next) => {
     res.render('settings');
 });
 
