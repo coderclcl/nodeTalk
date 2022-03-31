@@ -3,6 +3,12 @@ const Sequelize = require('sequelize');
 module.exports = class UserInfo extends Sequelize.Model {
     static init(sequelize) {
         return super.init({
+            uid: {
+                primaryKey: true,
+                type: Sequelize.STRING(10),
+                allowNull: false,
+                unique:true,
+            }, 
             phone: {
                 type: Sequelize.STRING(11),
                 allowNull: false,
@@ -15,10 +21,6 @@ module.exports = class UserInfo extends Sequelize.Model {
             birth: {
                 type: Sequelize.DATE,
                 allowNull: true,
-            },
-            name: {
-                type: Sequelize.STRING(10),
-                allowNull:false,
             },
         }, {
             sequelize,
@@ -35,7 +37,10 @@ module.exports = class UserInfo extends Sequelize.Model {
     static associate(db) {
 
         // User 테이블과 UserInfo 테이블의 관계 
-        db.UserInfo.belongsTo(db.User);
+        db.UserInfo.belongsTo(db.User, { 
+            foreignKey: 'uid',
+            sourceKey: 'uid', 
+        });
 
         
     }

@@ -4,6 +4,7 @@ module.exports = class Room extends Sequelize.Model {
     static init(sequelize) {
         return super.init({
             rid: {
+                primaryKey: true,
                 type: Sequelize.STRING(10),
                 allowNull: false,
                 unique: true,
@@ -27,12 +28,15 @@ module.exports = class Room extends Sequelize.Model {
 
         // Room 테이블과 User 테이블의 관계 (Member 중간 테이블 만들기)
         db.Room.belongsToMany(db.User, {
-            through: 'Member',
+            through: 'Members',
             foreignKey: 'rid',
         });
 
         // Room 테이블과 Chat 테이블의 관계 
-        db.Room.hasMany(db.Chat);
+        db.Room.hasMany(db.Chat, {
+            foreignKey: 'rid',
+            sourceKey: 'rid',
+        });
 
 
     }

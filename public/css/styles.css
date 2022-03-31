@@ -21,6 +21,9 @@
 @import "screens/settings.css";
 @import "screens/chat.css";
 
+/* Screens made by Kelly */
+@import "screens/joinComplete.css";
+
 body {
   color: #2e363e;
   font-family: "Open Sans", sans-serif;

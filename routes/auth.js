@@ -4,30 +4,37 @@ const bcrypt = require('bcrypt');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const User = require('../models/user');
 const UserInfo = require('../models/userInfo');
+const { sequelize } = require('../models');
 
 const  router = express.Router();
 
 router.post('/join', isNotLoggedIn, async (req, res, next) => {
     const { uid, password, name, phone, mail, birth } = req.body;
 
+    const t = await sequelize.transaction();
+
     try {
         const exUser = await User.findOne({ where: { uid } });
         if (exUser) {
             return res.redirect('/join?error=exist');
         }
-        // transaction 하는 방법은? 
+        // transaction을 sequelize 기능으로 구현 
         await User.create({
             uid,
             password,
-        });
+            name,
+        }, {transaction: t});
         await UserInfo.create({
             uid,
             phone, 
             mail,
             birth,
-            name,
-        });
-        return res.redirect('/');
+        }, {transaction: t});
+
+        // 문제 없으면 이 줄에 도달해서 트랜잭션을 커밋 
+        await t.commit();
+
+        return res.redirect('/joinComplete');
     } catch (error) {
         console.error(error);
         return next(error);
@@ -35,8 +42,6 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
 });
 
 router.post('/login', isNotLoggedIn, (req, res, next) => {
-
-    console.log("routes/auth.js 의 router.post('/login')로 왔어");
 
     passport.authenticate('local', (authError, user, info) => {
         if (authError) {
